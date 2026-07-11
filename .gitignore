@@ -1,24 +1,37 @@
-# Streamlit Secrets
-.streamlit/secrets.toml
-
-# Environment files
-.env
-*.env
-secrets.toml
-
 # Python cache
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
-.ipynb_checkpoints/
+*.py[cod]
+*$py.class
 
 # Virtual environments
 .venv/
-.venv-1/
 venv/
-ENV/
+env/
 
-# System files
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# Environment and secret files
+.env
+.env.*
+*.pem
+*.key
+
+# Editor settings
+.vscode/
+.idea/
+
+# Raw and intermediate datasets
+*.csv
+*.parquet
+
+# Development-only scripts
+migrate_data.py
+
+# Operating-system files
 .DS_Store
 Thumbs.db
