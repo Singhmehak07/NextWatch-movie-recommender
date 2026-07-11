@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+  <title id="title">UpNext animated project banner</title>
+  <desc id="desc">A dark cinematic banner with a red animated play icon and the UpNext title.</desc>
+
+  <style>
+    .title {
+      font: 900 86px Arial, Helvetica, sans-serif;
+      letter-spacing: -4px;
+      fill: #ffffff;
+      animation: titleIn 1s ease-out both;
+    }
+    .accent {
+      fill: #e50914;
+      animation: pulse 2.4s ease-in-out infinite;
+      transform-origin: 166px 177px;
+    }
+    .tagline {
+      font: 400 25px Arial, Helvetica, sans-serif;
+      letter-spacing: 1px;
+      fill: #b8b8b8;
+      animation: fadeUp 1s .35s ease-out both;
+    }
+    .eyebrow {
+      font: 700 14px Arial, Helvetica, sans-serif;
+      letter-spacing: 5px;
+      fill: #e50914;
+      animation: fadeUp .8s .15s ease-out both;
+    }
+    .line {
+      stroke: #e50914;
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-dasharray: 580;
+      stroke-dashoffset: 580;
+      animation: draw 1.4s .55s ease-out forwards;
+    }
+    .ring {
+      fill: none;
+      stroke: #e50914;
+      stroke-width: 2;
+      opacity: 0;
+      transform-origin: 166px 177px;
+      animation: ripple 2.4s ease-out infinite;
+    }
+    .dot {
+      fill: #e50914;
+      animation: blink 2s ease-in-out infinite;
+    }
+    .d2 { animation-delay: .35s; }
+    .d3 { animation-delay: .7s; }
+
+    @keyframes titleIn {
+      from { transform: translateX(24px); }
+      to { transform: translateX(0); }
+    }
+    @keyframes fadeUp {
+      from { transform: translateY(12px); }
+      to { transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.07); }
+    }
+    @keyframes ripple {
+      0% { opacity: .65; transform: scale(.88); }
+      70%, 100% { opacity: 0; transform: scale(1.38); }
+    }
+    @keyframes draw {
+      to { stroke-dashoffset: 0; }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: .22; }
+      50% { opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+      .line { stroke-dashoffset: 0; }
+    }
+  </style>
+
+  <rect width="1200" height="360" rx="24" fill="#111111"/>
+  <rect x="1" y="1" width="1198" height="358" rx="23" fill="none" stroke="#303030" stroke-width="2"/>
+
+  <circle cx="166" cy="177" r="75" fill="#1b1b1b" stroke="#343434" stroke-width="2"/>
+  <circle class="ring" cx="166" cy="177" r="75"/>
+  <path class="accent" d="M145 132 L145 222 L218 177 Z"/>
+
+  <text class="eyebrow" x="285" y="102">CONTENT-BASED MOVIE RECOMMENDER</text>
+  <text class="title" x="280" y="200">Up<tspan fill="#e50914">Next</tspan></text>
+  <text class="tagline" x="285" y="251">Your next watch — matched by theme, ranked by rating.</text>
+  <line class="line" x1="285" y1="285" x2="865" y2="285"/>
+
+  <circle class="dot" cx="1035" cy="79" r="5"/>
+  <circle class="dot d2" cx="1061" cy="79" r="5"/>
+  <circle class="dot d3" cx="1087" cy="79" r="5"/>
+
+  <text x="925" y="306" font-family="Arial, Helvetica, sans-serif" font-size="15" letter-spacing="2" fill="#777777">TF-IDF · COSINE · STREAMLIT</text>
+</svg>

@@ -1,178 +1,213 @@
-# 🍿 UpNext
+<p align="center">
+  <img src="assets/upnext-banner.svg" alt="UpNext — find your next watch" width="100%" />
+</p>
 
-> Your next watch, matched by theme and ranked by rating.
+<p align="center">
+  <strong>A content-based movie recommender that matches titles by theme and ranks them with a small quality boost.</strong>
+</p>
 
-UpNext is a content-based movie recommendation system that recommends movies using their content and metadata, not user viewing history. By analyzing the thematic descriptors of a movie (genre, cast, director, and plot details), it identifies the closest thematic matches in the Netflix catalog and applies a small rating-based ranking boost to present the top five recommendations in a clean, cinematic interface.
+<p align="center">
+  <a href="https://streamlit.io/"><img src="https://img.shields.io/badge/Built%20with-Streamlit-FF4B4B?style=flat-square&logo=streamlit&logoColor=white" alt="Streamlit" /></a>
+  <img src="https://img.shields.io/badge/Python-3.9%2B-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python 3.9+" />
+  <img src="https://img.shields.io/badge/Model-TF--IDF-E50914?style=flat-square" alt="TF-IDF model" />
+  <img src="https://img.shields.io/badge/Catalog-through%202025-181818?style=flat-square" alt="Catalog through 2025" />
+</p>
 
-## 🔗 Live Demo
+<p align="center">
+  <a href="https://YOUR-APP-NAME.streamlit.app"><strong>Launch the live app →</strong></a>
+  ·
+  <a href="#-how-it-works">How it works</a>
+  ·
+  <a href="#-run-locally">Run locally</a>
+</p>
 
-[Open the UpNext app](<YOUR_STREAMLIT_APP_URL>)
-
-<!-- ![UpNext demo](assets/upnext-demo.png) (Place a screenshot or GIF of the app in the assets folder once captured) -->
+> **Before publishing:** replace `https://YOUR-APP-NAME.streamlit.app` with your real Streamlit URL.
 
 ---
 
-## 🎨 Features
+## Demo
 
-- 🎯 **Theme-based Recommendations**: Recommends movies by matching underlying themes, genres, cast, and descriptions.
-- ⭐ **Quality-Aware Ranking**: Incorporates a small rating-based nudge to break ties and ensure high-quality movies are ranked higher.
-- 🖼️ **Live Poster & Backdrop Integration**: Dynamically fetches backdrop banners and movie posters from TMDB.
-- 🥇 **Ranked Results View**: Display of top five recommendations styled with cinematic dark cards, movie badges, and similarity bars.
-- 🎬 **Graceful Fallbacks**: Displays clean, styled default placeholders if movie posters or backdrop images are not available.
-- 🔒 **Secure Keys & Exception Safety**: Gracefully handles missing TMDB API keys, request timeouts, and invalid data formats without crashing.
+<p align="center">
+  <img src="demo.png" alt="UpNext application demo" width="100%" />
+</p>
 
----
+> Add your app screenshot to the repository root and name it **`demo.png`**. GitHub will display it here automatically.
 
-## 🧠 How the Recommendation Pipeline Works
+## About UpNext
 
-UpNext uses a natural language processing pipeline to calculate movie-to-movie similarity:
+UpNext is a content-based recommendation system built around a processed Netflix catalog through 2025. Instead of relying on viewing history or user profiles, it compares the metadata of each title—including genres, cast, director, and plot description—to find movies with similar themes.
 
+After retrieving the closest matches, UpNext applies a small rating-based boost and presents the top five recommendations in a cinematic Streamlit interface with live TMDB artwork.
+
+## Features
+
+- **Theme-based recommendations** — matches titles using genres, cast, director, and plot information.
+- **Quality-aware ranking** — combines 90% content similarity with a 10% normalized rating boost.
+- **Fast single-bar search** — shows a small set of matching titles as the user types instead of loading the full catalog into the browser.
+- **Live movie artwork** — retrieves posters and backdrop images from TMDB.
+- **Parallel image fetching** — requests recommendation artwork concurrently to reduce waiting time.
+- **Ranked top-five results** — displays ratings, medals, and relative match bars in a responsive card layout.
+- **Graceful fallbacks** — uses a clean placeholder when TMDB artwork is unavailable.
+- **Secure configuration** — reads the TMDB key from Streamlit secrets rather than storing it in the repository.
+
+## How it works
+
+```text
+Raw catalog
+    ↓
+Clean and normalize metadata
+    ↓
+Combine genre, cast, director, and description into tags
+    ↓
+Convert tags into TF-IDF vectors
+    ↓
+Calculate cosine similarity against the selected movie
+    ↓
+Keep the 20 closest candidates
+    ↓
+Apply a small rating boost
+    ↓
+Return the top 5 recommendations
 ```
-Clean data
-→ Combine genre, cast, director, and description into tags
-→ Convert tags into TF-IDF vectors (using TfidfVectorizer)
-→ Calculate cosine similarity
-→ Select the closest movies
-→ Apply a small rating boost for ranking
-→ Display the top five results
+
+### Ranking formula
+
+```text
+final_score = (cosine_similarity × 0.90) + (normalized_rating × 0.10)
 ```
 
-### Ranking Formula
-To produce the final recommended list, we retrieve the 20 most similar items via cosine similarity and re-rank them using a combined score:
-$$\text{Score} = (\text{Cosine Similarity} \times 0.9) + (\text{Normalized Rating} \times 0.1)$$
-* The **Similarity Score** displayed to users represents the raw cosine similarity percentage:
-  $$\text{Similarity Score} = \max(0, \min(100, \text{round}(\text{Cosine Similarity} \times 100)))$$
-* The rating boost uses a normalized rating (scaled to a $0.0 - 1.0$ range from TMDB's $0 - 10$ scale) to breaks ties and favor well-received movies.
+The model is intentionally weighted toward relevance: similarity contributes **90%** of the final score, while rating contributes **10%** as a small quality signal.
 
----
+The match bars shown in the interface are relative to the highest-ranked recommendation: the first result is displayed as 100%, and the remaining results are scaled against its final score. They represent metadata alignment—not a guaranteed enjoyment probability.
 
-## 🛠️ Technology Stack
+## Tech stack
 
 | Purpose | Technology |
-| :--- | :--- |
-| **App / UI** | [Streamlit](https://streamlit.io/) |
-| **Data Wrangling** | [Pandas](https://pandas.pydata.org/) |
-| **Vectorization / Similarity** | [Scikit-learn](https://scikit-learn.org/) (TF-IDF & Cosine Similarity) |
-| **Sparse Matrix Storage** | [SciPy](https://scipy.org/) |
-| **Data Serialization** | [PyArrow](https://pyarrow.apache.org/) (Parquet format) & Pickle |
-| **External Poster Service** | [TMDB API](https://www.themoviedb.org/) |
+|---|---|
+| App and interface | [Streamlit](https://streamlit.io/) |
+| Live search component | `streamlit-searchbox` |
+| Data processing | [pandas](https://pandas.pydata.org/) |
+| TF-IDF and cosine similarity | [scikit-learn](https://scikit-learn.org/) |
+| Sparse matrix storage | [SciPy](https://scipy.org/) |
+| API requests | [Requests](https://requests.readthedocs.io/) |
+| Posters and backdrops | [TMDB API](https://www.themoviedb.org/) |
 
----
+## Repository structure
 
-## 📁 Repository Structure
-
-The project has a flat structure at the root of the repository:
-
-```
+```text
 NextWatch-movie-recommender/
-├── app.py                      # Streamlit application
-├── movies.pkl                  # Movie metadata database (Pickle fallback)
-├── movies.parquet              # Movie metadata database (Safer Parquet format)
-├── vectors.npz                 # Precalculated TF-IDF sparse matrix
-├── requirements.txt            # Project dependencies list
-├── README.md                   # Project documentation
-├── .gitignore                  # Git file exclude list
-└── .streamlit/
-    └── secrets.toml.example    # Configuration placeholder for TMDB API key
+├── assets/
+│   └── upnext-banner.svg   # animated README banner
+├── app.py                  # Streamlit application
+├── movies.pkl              # cleaned movie metadata
+├── vectors.npz             # precomputed sparse TF-IDF matrix
+├── requirements.txt        # Python dependencies
+├── README.md               # project documentation
+├── demo.png                # app screenshot you will add
+└── .gitignore              # files excluded from Git
 ```
 
+## Run locally
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Singhmehak07/NextWatch-movie-recommender.git
+cd NextWatch-movie-recommender
+```
+
+### 2. Create a virtual environment
+
+```bash
+python -m venv .venv
+```
+
+Activate it on Windows:
+
+```powershell
+.venv\Scripts\activate
+```
+
+Activate it on macOS or Linux:
+
+```bash
+source .venv/bin/activate
+```
+
+### 3. Install the dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Add your TMDB API key
+
+Create `.streamlit/secrets.toml` locally:
+
+```toml
+TMDB_API_KEY = "your_tmdb_v3_api_key"
+```
+
+The secrets file must remain excluded by `.gitignore`. Never commit a real API key.
+
+### 5. Start the app
+
+```bash
+streamlit run app.py
+```
+
+Streamlit will normally open the app at `http://localhost:8501`.
+
+## Deploy on Streamlit Community Cloud
+
+1. Push the project to GitHub.
+2. Open [Streamlit Community Cloud](https://share.streamlit.io/).
+3. Create an app from `Singhmehak07/NextWatch-movie-recommender`.
+4. Set the main file path to `app.py`.
+5. Open **App settings → Secrets** and add:
+
+```toml
+TMDB_API_KEY = "your_tmdb_v3_api_key"
+```
+
+6. Deploy, then replace the placeholder live-demo URL at the top of this README.
+
+## Dataset
+
+The recommendation data comes from a processed Netflix catalog covering titles through 2025. During preprocessing, descriptive fields were cleaned and combined into a single tag representation used by TF-IDF.
+
+The deployed app loads precomputed artifacts (`movies.pkl` and `vectors.npz`) so it does not need to rebuild the vectorizer whenever it starts.
+
+## Known limitations
+
+- Recommendation quality depends on the richness and accuracy of the available metadata.
+- The system is content-based and does not learn from individual viewing behavior.
+- Duplicate or highly ambiguous titles may resolve to the first matching dataset row.
+- TMDB title searches can occasionally return incorrect artwork for short or ambiguous movie names.
+- Match percentages describe relative metadata similarity, not the probability that someone will enjoy a title.
+- Titles released after the dataset's 2025 cutoff are not included.
+
+## Future improvements
+
+- Add year-aware TMDB matching for more accurate posters.
+- Introduce fuzzy title search for misspellings.
+- Expand and evaluate the TV-show catalog.
+- Add offline relevance metrics and user feedback evaluation.
+- Support personalized recommendations using interaction data.
+
+## Credits
+
+Movie posters and backdrop images are provided by [The Movie Database (TMDB)](https://www.themoviedb.org/).
+
+> This product uses the TMDB API but is not endorsed or certified by TMDB.
+
+## Author
+
+**Mehakpreet Singh**  
+Building projects while learning machine learning, NLP, and practical deployment.
+
 ---
 
-## 🚀 Local Installation
-
-### Prerequisites
-* Python **3.9 to 3.11** is recommended for compatibility with all dependencies.
-
-### Installation Steps
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/Singhmehak07/NextWatch-movie-recommender.git
-   cd NextWatch-movie-recommender
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Configure the TMDB API Key:**
-   Before running the app, create a `.streamlit/secrets.toml` file at the root containing your API key:
-   ```toml
-   TMDB_API_KEY = "your_real_tmdb_api_key"
-   ```
-
-4. **Launch the application:**
-   ```bash
-   streamlit run app.py
-   ```
-   Open `http://localhost:8501` in your browser.
-
----
-
-## 🔑 TMDB API Configuration
-
-### How to Create a TMDB API Key
-1. Sign up or log into [The Movie Database (TMDB)](https://www.themoviedb.org/).
-2. Navigate to your Account Settings page and choose **API** from the sidebar.
-3. Click **Create** under the API Key section and select **Developer**.
-4. Fill in the required details and accept the terms of use to generate your V3 API Key.
-
-### Deployed Streamlit Cloud Configuration
-When deploying to Streamlit Community Cloud:
-1. Go to your app's dashboard.
-2. Select **Settings** > **Secrets**.
-3. Add your key exactly as follows:
-   ```toml
-   TMDB_API_KEY = "your_real_tmdb_api_key"
-   ```
-
----
-
-## 📊 Dataset Information
-
-The app is built on a processed Netflix catalog covering titles available up to **2025**. During preprocessing, genre descriptors, cast lists, director names, and textual plot descriptions were merged into a single `tags` field to enable thematic comparisons. Ratings are derived from standard audience votes and normalized to a $0 - 10$ scale.
-
----
-
-## ⚠️ Known Limitations
-
-- **Metadata Dependence**: Recommendations are highly dependent on the quality and richness of descriptions and tags in the dataset.
-- **No User Learning**: The system is completely content-based and does not learn from user viewing histories or personal profiles.
-- **Title Ambiguity**: If duplicate movie titles exist in the dataset, the recommender currently matches the first occurrence.
-- **Poster Inaccuracies**: TMDB API poster searches are matched by title and year. If metadata is missing or off, an incorrect poster might occasionally be selected.
-- **Similarity Score Interpretation**: The similarity score indicates metadata alignment, not a guaranteed enjoyment rate.
-- **Dataset Horizon**: The local catalog contains movies and TV shows released up to **2025**. Newer releases will not appear in results.
-- **Minor Rating Impact**: Ratings are used strictly as a minor $10\%$ tie-breaker during final ranking.
-
----
-
-## 🔒 Security Notes
-
-### Exposed API Key Revocation
-> [!WARNING]
-> The TMDB API key that was previously hardcoded in the source code (`f31b26dcf87e179fce79c0790da2ebd2`) has been leaked publicly. **You must immediately log into your TMDB account and delete/revoke this key manually.**
-
-### Purging Exposed Secrets from Git History
-If you pushed a commit containing your real TMDB API key to GitHub, you should purge it from your history to prevent abuse:
-1. Use `git-filter-repo` (recommended) or `BFG Repo-Cleaner` to remove the secret:
-   ```bash
-   git filter-repo --invert-paths --path-match-filters <pattern>
-   ```
-2. Alternatively, force-push the cleaned commits back to your remote:
-   ```bash
-   git push origin --force --all
-   ```
-   * **Warning**: Force pushing rewrites the git timeline. Other collaborators will need to re-clone the repository.
-
----
-
-## 🙏 Credits
-
-- Movie posters and background banners are provided by [The Movie Database (TMDB)](https://www.themoviedb.org/). This product uses the TMDB API but is not officially endorsed or certified by TMDB.
-
----
-
-## 👤 Author
-
-**Mehakpreet Singh** — part of an ongoing machine-learning learning journey.
+<p align="center">
+  If you found this project useful, consider giving the repository a star.
+</p>
