@@ -15,10 +15,6 @@
 
 <p align="center">
   <a href="https://nextwa.streamlit.app/"><strong>Launch the live app →</strong></a>
-  ·
-  <a href="#-how-it-works">How it works</a>
-  ·
-  <a href="#-run-locally">Run locally</a>
 </p>
 
 
@@ -202,6 +198,7 @@ Movie posters and backdrop images are provided by [The Movie Database (TMDB)](ht
 ## Author
 
 **Mehakpreet Singh**  
+
 Building projects while learning machine learning.
 ---
 
