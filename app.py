@@ -22,6 +22,35 @@ st.markdown("""
 <style>
 .stApp { background:#141414; }
 
+/* hide Streamlit platform controls */
+header[data-testid="stHeader"] {
+    display: none !important;
+    height: 0 !important;
+}
+[data-testid="stToolbar"],
+[data-testid="stAppToolbar"],
+[data-testid="stDecoration"],
+[data-testid="stStatusWidget"],
+[data-testid="stDeployButton"] {
+    display: none !important;
+    visibility: hidden !important;
+}
+#MainMenu {
+    display: none !important;
+    visibility: hidden !important;
+}
+footer {
+    display: none !important;
+    visibility: hidden !important;
+}
+/* remove spacing left behind by the hidden header */
+[data-testid="stAppViewContainer"] > .main {
+    padding-top: 0 !important;
+}
+.block-container {
+    padding-top: 2rem !important;
+}
+
 .hero-row  { display:flex; align-items:center; gap:14px; margin-bottom:6px; }
 .hero-icon { font-size:3rem; line-height:1; }
 .hero-title {
