@@ -14,7 +14,7 @@
 </p>
 
 <p align="center">
-  <a href="https://YOUR-APP-NAME.streamlit.app"><strong>Launch the live app →</strong></a>
+  <a href="https://nextwa.streamlit.app/"><strong>Launch the live app →</strong></a>
   ·
   <a href="#-how-it-works">How it works</a>
   ·
