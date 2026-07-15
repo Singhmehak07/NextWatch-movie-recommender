@@ -106,7 +106,7 @@ NextWatch-movie-recommender/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/Singhmehak07/NextWatch-movie-recommender.git
+git clone https://github.com/Singhmehak07/UpNext-movie-recommender
 cd NextWatch-movie-recommender
 ```
 
